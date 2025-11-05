@@ -1,0 +1,287 @@
+R2 configurations:
+R2#sh ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is 10.0.0.1 to network 0.0.0.0
+
+     10.0.0.0/8 is variably subnetted, 3 subnets, 2 masks
+C       10.0.0.0/30 is directly connected, GigabitEthernet0/0
+L       10.0.0.2/32 is directly connected, GigabitEthernet0/0
+O       10.0.1.0/30 [110/2] via 10.0.0.1, 00:25:25, GigabitEthernet0/0
+     11.0.0.0/30 is subnetted, 2 subnets
+O IA    11.0.0.0/30 [110/3] via 10.0.0.1, 00:25:15, GigabitEthernet0/0
+O IA    11.0.1.0/30 [110/3] via 10.0.0.1, 00:25:15, GigabitEthernet0/0
+     12.0.0.0/29 is subnetted, 1 subnets
+O IA    12.0.0.0/29 [110/2] via 10.0.0.1, 00:25:25, GigabitEthernet0/0
+O*E2 0.0.0.0/0 [110/1] via 10.0.0.1, 00:00:35, GigabitEthernet0/0
+
+R2#sh ip protocols
+
+Routing Protocol is "ospf 1"
+  Outgoing update filter list for all interfaces is not set 
+  Incoming update filter list for all interfaces is not set 
+  Router ID 10.0.0.2
+  Number of areas in this router is 1. 1 normal 0 stub 0 nssa
+  Maximum path: 4
+  Routing for Networks:
+    10.0.0.0 0.0.0.3 area 1
+  Routing Information Sources:  
+    Gateway         Distance      Last Update 
+    10.0.0.2             110      00:26:50
+    10.0.1.2             110      00:26:50
+    12.0.0.2             110      00:26:50
+  Distance: (default is 110)
+
+R2#sh ip ospf neighbor
+
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+12.0.0.2          1   FULL/DR         00:00:36    10.0.0.1        GigabitEthernet0/0
+
+R2#sh ip ospf int g0/0
+
+GigabitEthernet0/0 is up, line protocol is up
+  Internet address is 10.0.0.2/30, Area 1
+  Process ID 1, Router ID 10.0.0.2, Network Type BROADCAST, Cost: 1
+  Transmit Delay is 1 sec, State BDR, Priority 1
+  Designated Router (ID) 12.0.0.2, Interface address 10.0.0.1
+  Backup Designated Router (ID) 10.0.0.2, Interface address 10.0.0.2
+  Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
+    Hello due in 00:00:02
+  Index 1/1, flood queue length 0
+  Next 0x0(0)/0x0(0)
+  Last flood scan length is 1, maximum is 1
+  Last flood scan time is 0 msec, maximum is 0 msec
+  Neighbor Count is 1, Adjacent neighbor count is 1
+    Adjacent with neighbor 12.0.0.2  (Designated Router)
+  Suppress hello for 0 neighbor(s)
+
+R1 Configurations:
+R1#sh ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is 12.0.0.1 to network 0.0.0.0
+
+     10.0.0.0/8 is variably subnetted, 4 subnets, 2 masks
+C       10.0.0.0/30 is directly connected, GigabitEthernet0/0
+L       10.0.0.1/32 is directly connected, GigabitEthernet0/0
+C       10.0.1.0/30 is directly connected, GigabitEthernet0/1
+L       10.0.1.1/32 is directly connected, GigabitEthernet0/1
+     11.0.0.0/30 is subnetted, 2 subnets
+O IA    11.0.0.0/30 [110/2] via 12.0.0.3, 00:30:37, GigabitEthernet0/2
+O IA    11.0.1.0/30 [110/2] via 12.0.0.3, 00:30:37, GigabitEthernet0/2
+     12.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+C       12.0.0.0/29 is directly connected, GigabitEthernet0/2
+L       12.0.0.2/32 is directly connected, GigabitEthernet0/2
+O*E2 0.0.0.0/0 [110/1] via 12.0.0.1, 00:06:02, GigabitEthernet0/2
+
+R1#sh ip protocols
+
+Routing Protocol is "ospf 1"
+  Outgoing update filter list for all interfaces is not set 
+  Incoming update filter list for all interfaces is not set 
+  Router ID 12.0.0.2
+  Number of areas in this router is 2. 2 normal 0 stub 0 nssa
+  Maximum path: 4
+  Routing for Networks:
+    10.0.0.0 0.0.0.3 area 1
+    10.0.1.0 0.0.0.3 area 1
+    12.0.0.0 0.0.0.7 area 0
+  Routing Information Sources:  
+    Gateway         Distance      Last Update 
+    10.0.0.2             110      00:01:58
+    10.0.1.2             110      00:01:57
+    12.0.0.2             110      00:01:57
+    12.0.0.3             110      00:01:58
+    203.0.15.1           110      00:07:18
+  Distance: (default is 110)
+
+R1#sh ip ospf neighbor
+
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+10.0.0.2          1   FULL/BDR        00:00:31    10.0.0.2        GigabitEthernet0/0
+10.0.1.2          1   FULL/BDR        00:00:31    10.0.1.2        GigabitEthernet0/1
+203.0.15.1        1   FULL/DR         00:00:31    12.0.0.1        GigabitEthernet0/2
+12.0.0.3          1   FULL/BDR        00:00:31    12.0.0.3        GigabitEthernet0/2
+
+R1#sh ip ospf int g0/0
+
+GigabitEthernet0/0 is up, line protocol is up
+  Internet address is 10.0.0.1/30, Area 1
+  Process ID 1, Router ID 12.0.0.2, Network Type BROADCAST, Cost: 1
+  Transmit Delay is 1 sec, State DR, Priority 1
+  Designated Router (ID) 12.0.0.2, Interface address 10.0.0.1
+  Backup Designated Router (ID) 10.0.0.2, Interface address 10.0.0.2
+  Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
+    Hello due in 00:00:07
+  Index 1/1, flood queue length 0
+  Next 0x0(0)/0x0(0)
+  Last flood scan length is 1, maximum is 1
+  Last flood scan time is 0 msec, maximum is 0 msec
+  Neighbor Count is 1, Adjacent neighbor count is 1
+    Adjacent with neighbor 10.0.0.2  (Backup Designated Router)
+  Suppress hello for 0 neighbor(s)
+R1#sh ip ospf int g0/2
+
+GigabitEthernet0/2 is up, line protocol is up
+  Internet address is 12.0.0.2/29, Area 0
+  Process ID 1, Router ID 12.0.0.2, Network Type BROADCAST, Cost: 1
+  Transmit Delay is 1 sec, State DROTHER, Priority 1
+  Designated Router (ID) 203.0.15.1, Interface address 12.0.0.1
+  Backup Designated Router (ID) 12.0.0.3, Interface address 12.0.0.3
+  Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
+    Hello due in 00:00:00
+  Index 3/3, flood queue length 0
+  Next 0x0(0)/0x0(0)
+  Last flood scan length is 1, maximum is 1
+  Last flood scan time is 0 msec, maximum is 0 msec
+  Neighbor Count is 2, Adjacent neighbor count is 2
+    Adjacent with neighbor 203.0.15.1  (Designated Router)
+    Adjacent with neighbor 12.0.0.3  (Backup Designated Router)
+  Suppress hello for 0 neighbor(s)
+R1#sh ip ospf int g0/1
+
+GigabitEthernet0/1 is up, line protocol is up
+  Internet address is 10.0.1.1/30, Area 1
+  Process ID 1, Router ID 12.0.0.2, Network Type BROADCAST, Cost: 1
+  Transmit Delay is 1 sec, State DR, Priority 1
+  Designated Router (ID) 12.0.0.2, Interface address 10.0.1.1
+  Backup Designated Router (ID) 10.0.1.2, Interface address 10.0.1.2
+  Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
+    Hello due in 00:00:07
+  Index 2/2, flood queue length 0
+  Next 0x0(0)/0x0(0)
+  Last flood scan length is 1, maximum is 1
+  Last flood scan time is 0 msec, maximum is 0 msec
+  Neighbor Count is 1, Adjacent neighbor count is 1
+    Adjacent with neighbor 10.0.1.2  (Backup Designated Router)
+  Suppress hello for 0 neighbor(s)
+
+ASBR running configuration:
+ASBR(config-router)#do sh run
+Building configuration...
+
+Current configuration : 1229 bytes
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname ASBR
+!
+!
+!
+!
+!
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+!
+license udi pid CISCO2911/K9 sn FTX1524422G-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ ip address 203.0.15.1 255.255.255.252
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface GigabitEthernet0/2
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface GigabitEthernet0/0/0
+ no ip address
+ shutdown
+!
+interface FastEthernet0/1/0
+ switchport access vlan 10
+ switchport mode access
+!
+interface FastEthernet0/1/1
+ switchport mode access
+!
+interface FastEthernet0/1/2
+ switchport mode access
+!
+interface FastEthernet0/1/3
+ switchport mode access
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan10
+ mac-address 000b.bec2.1b01
+ ip address 12.0.0.1 255.255.255.248
+!
+router ospf 3
+ log-adjacency-changes
+ network 12.0.0.0 0.0.0.3 area 0
+ default-information originate
+!
+ip classless
+ip route 0.0.0.0 0.0.0.0 203.0.15.2 
+!
+ip flow-export version 9
+!
+!
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
+
+           
